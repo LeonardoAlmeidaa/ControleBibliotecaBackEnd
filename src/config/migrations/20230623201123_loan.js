@@ -10,7 +10,7 @@ exports.up = function(knex) {
         table.boolean('status').defaultTo(null),
         table.string('obs', 1000),
         table.timestamps(true,true),
-        table.datetime('deleted_at').defaultTo(null)
+        table.datetime('deleted_at').defaultTo(null) 
     })
 }
 
