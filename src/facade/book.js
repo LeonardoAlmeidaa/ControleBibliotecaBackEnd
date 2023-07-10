@@ -21,13 +21,13 @@ const search = async (body) => {
 }
 
 const byId = async (body) => {
-    if (!body) { 
+    if (!body) {
         return false
     }
     return await dbo.byId(tableName, body, "id")
 }
 
-const byName = async (body) => { 
+const byName = async (body) => {
     if (!body) {
         return false
     }
@@ -47,7 +47,6 @@ const byAuthor = async (body) => {
     }
     return await dbo.byAuthor(tableName, body, "author")
 }
-
 
 const insert = async (object) => {
     try {
@@ -74,4 +73,24 @@ const update = async (object, id) => {
         return { errors }
     }
     return await dbo.update(object, tableName)
+}
+
+const remove = async (id) => {
+    if(!id) {
+        return false
+    }
+    return await dbo.remove(id, tableName)
+}
+
+module.exports = {
+    get,
+    getById,
+    search,
+    byId,
+    byName,
+    byGender,
+    byAuthor,
+    insert,
+    update,
+    remove
 }
