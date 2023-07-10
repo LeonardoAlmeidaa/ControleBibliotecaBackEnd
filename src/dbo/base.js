@@ -136,5 +136,5 @@ module.exports = {
   update,
   remove,
   filter,
-  login,
+  login
 }
