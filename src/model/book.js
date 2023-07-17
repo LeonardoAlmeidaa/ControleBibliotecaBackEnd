@@ -1,7 +1,6 @@
 const Joi = require("joi")
 
 const object = Joi.object().keys({
-  id: Joi.number().required(),
   name: Joi.string().required(),
   gender: Joi.string(),
   author: Joi.string(),

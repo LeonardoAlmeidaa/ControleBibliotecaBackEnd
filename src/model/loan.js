@@ -1,13 +1,12 @@
 const Joi = require("joi")
 
-const object = Joi.object.keys({
-  id: Joi.number.require(),
-  id_user: Joi.number.require(),
-  id_book: Joi.number.require(),
-  loan_start: Joi.date.require(),
-  loan_end: Joi.date.require(),
-  status: Joi.number,
-  obs: Joi.string
+const object = Joi.object().keys({
+  id_user: Joi.number().required(),
+  id_book: Joi.number().required(),
+  loan_start: Joi.date().required(),
+  loan_end: Joi.date(),
+  status: Joi.number(),
+  obs: Joi.string()
 })
 
-modules.export = {object}
+module.exports = {object}
