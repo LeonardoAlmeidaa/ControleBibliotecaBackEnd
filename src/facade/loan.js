@@ -3,6 +3,7 @@ const dbo = require("../dbo/base")
 const dboLoan = require("../dbo/loan") /*Customizado*/
 const validation = require("../model/loan")
 const tableName = "loan"
+const moment = require("moment")
 
 const get = async () => {
   return await dbo.get(tableName)
@@ -66,6 +67,26 @@ const insert = async (object) => {
       const errors = error.details.map((el) => el.message)
       return { errors }
   }
+
+  object.loanEnd = moment(object.loanStart).add("3", "days").format()
+  const param = [ { column: "id_book",  signal: '==', value: object.id_book } ]
+  const oldData = await dbo.search(tableName, param)
+
+  console.log(param)
+
+  if (!oldData) {
+    console.log(oldData)
+    return await dbo.insert(object, tableName)
+  }
+
+  for (let index = 0; index < oldData.length; index++) {
+    const element = oldData[index]
+    //if (element.loanStart >= object.loanStart && element.loanEnd < object.loanStart) {
+    if (element.loanStart >= "2023-07-17 00:00:00" && "2023-07-20 14:58:02" < object.loanStart) {
+      return {errors: [{file: 'Erro', message: "asdasdasdasdasda" } ]}
+    }
+  }
+
   return await dbo.insert(object, tableName)
 }
 
