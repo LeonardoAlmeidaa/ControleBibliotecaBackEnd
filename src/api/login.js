@@ -14,6 +14,9 @@ const post = async (req, res) => {
     res.cookie("cookieID", result.id)
     res.cookie("cookieTime", now)
     delete result.password
+    delete result.createdAt
+    delete result.updatedAt
+    delete result.deletedAt
   }
 
   return res.status(200).send(result)
