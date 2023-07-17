@@ -1,4 +1,4 @@
-const rout = "/loan"
+const route = "/loan"
 const api = require("../api/loan")
 const auth = require("../api/auth")
 

@@ -9,6 +9,4 @@ module.exports = (router) => {
   router.route(`${route}/search/by-email`).all(auth.validate).get(api.byEmail)
   router.route(`${route}/search/by-status`).all(auth.validate).get(api.byStatus)
   router.route(`${route}/:id`).all(auth.validate).get(api.getById).patch(api.update).delete(api.remove)
-
-  router.route(`${route}/search/userGroup-by-userId`).all(auth.validate).get(api.getUserGroup)
 }
