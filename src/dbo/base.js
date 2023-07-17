@@ -33,31 +33,7 @@ const search = async (tableName, params = []) => {
     .where(function () {
       for (let i = 0; i < params.length; i++) {
         const element = params[i]
-        if (element.operator) {
-          switch (element.operator) {
-            case "AND":
-              this.andWhere(element.column, element.signal, element.value)
-              break
-            case "OR":
-              this.orWhere(element.column, element.signal, element.value)
-              break
-            case "LIKE":
-              this.orWhere(
-                element.column,
-                element.operator,
-                `%${element.value}%`
-              )
-              break
-            case "IN":
-              this.whereIn(element.column, element.value)
-              break
-            default:
-              this.andWhere(element.column, "LIKE", `%${element.value}%`)
-              break
-          }
-        } else {
-          this.where(element.column, element.signal, element.value)
-        }
+        this.where(element.column, element.signal, element.value)
       }
     })
     .catch((err) => {
