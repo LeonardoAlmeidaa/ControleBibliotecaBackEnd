@@ -59,10 +59,14 @@ const insert = async (req, res) => {
   const object = req.body
   const result = await facade.insert(object)
 
-  if (result.errors) {
-    return res.status(400).send(result.errors)
+  if (result) {
+    if (result.errors) {
+      return res.status(400).send(result.errors)
+    }
+    return res.sendStatus(204)
   }
-  return res.sendStatus(204)
+
+
 }
 
 const update = async (req, res) => {
