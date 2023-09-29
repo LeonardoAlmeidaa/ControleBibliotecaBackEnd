@@ -71,6 +71,7 @@ const insert = async (object, tableName) => {
 }
 
 const update = async (object, id, tableName) => {
+  console.log(tableName);
   const result = await db(tableName)
     .update(object)
     .where("id", id)
