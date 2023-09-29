@@ -4,10 +4,10 @@ const object = Joi.object().keys({
   name: Joi.string().required(),
   gender: Joi.string(),
   author: Joi.string(),
-  quantity_pages: Joi.string(),
-  date_acquisition: Joi.string(),
+  quantityPages: Joi.string(),
+  dateAcquisition: Joi.date(),
   status: Joi.number(),
-  obs: Joi.string()
+  obs: Joi.string().allow(null)
 })
 
 module.exports = { object }
