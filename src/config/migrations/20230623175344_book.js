@@ -5,7 +5,7 @@ exports.up = function(knex) {
         table.string('gender'),
         table.string('author'),
         table.string('quantity_pages', 5),
-        table.string('date_acquisition', 10),
+        table.datetime('date_acquisition'),
         table.boolean('status').defaultTo(true),
         table.string('obs', 1000),
         table.timestamps(true,true),
