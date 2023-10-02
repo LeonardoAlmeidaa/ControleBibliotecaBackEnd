@@ -43,20 +43,27 @@ const search = async (tableName, params = []) => {
 }
 
 const filter = async (tableName, params = {}, orderBy) => {
+  console.log("DBO");
   const array = Object.keys(params)
+  console.log(array);
   const result = await db(tableName)
     .select()
     .where(function () {
       for (let i = 0; i < array.length; i++) {
         const el = array[i]
+        console.log(el);
+        console.log("-");
+        console.log(params[el])
         this.where(el, "=", params[el])
       }
     })
     .where("deleted_at", null)
     .orderBy(orderBy)
     .catch((err) => {
+      console.log(err);
       return false
     })
+    console.log(result)
   return result
 }
 
