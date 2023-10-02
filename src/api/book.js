@@ -37,7 +37,10 @@ const byId = async (req, res) => {
 
 const byName = async (req, res) => {
   const object = req.query
+  delete object.page
+  delete object.limit
   const result = await facade.byName(object)
+
 
   if (result && result.length > 0) {
     return res.status(200).send(result)
@@ -57,6 +60,7 @@ const byGender = async (req, res) => {
 
 const byAuthor = async (req, res) => {
   const object = req.query
+  // console.log(object);
   const result = await facade.byAuthor(object)
 
   if (result && result.length > 0) {
