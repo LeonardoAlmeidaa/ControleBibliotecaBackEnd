@@ -86,10 +86,8 @@ const insert = async (object) => {
   } catch (error) {
     if (error.details) {
       const errors = error.details.map((el) => el.message)
-      console.log(errors)
       return { errors }
     } else {
-      console.log(error.message)
       return { errors: [error.message] }
     }
   }
