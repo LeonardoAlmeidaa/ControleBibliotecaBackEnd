@@ -27,28 +27,43 @@ const byId = async (body) => {
   return await dbo.byId(tableName, body, "id")
 }
 
-const byName = async (body) => {
-  // console.log(body)
+const byName = async (body, page, limit) => {
   if (!body) {
     return false
   }
-  return await dbo.filter(tableName, body, "name")
+
+  const object = []
+  object.push(body)
+
+  const result = await dbo.search(tableName, object, page, limit)
+
+  return result.data
 }
 
-const byGender = async (body) => {
-  // console.log(body)
+const byGender = async (body, page, limit) => {
   if (!body) {
     return false
   }
-  return await dbo.filter(tableName, body, "gender")
+
+  const object = []
+  object.push(body)
+
+  const result = await dbo.search(tableName, object, page, limit)
+
+  return result.data
 }
 
-const byAuthor = async (body) => {
-  // console.log(body)
+const byAuthor = async (body, page, limit) => {
   if (!body) {
     return false
   }
-  return await dbo.filter(tableName, body, "author")
+
+  const object = []
+  object.push(body)
+
+  const result = await dbo.search(tableName, object, page, limit)
+
+  return result.data
 }
 
 const insert = async (object) => {

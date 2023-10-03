@@ -26,7 +26,12 @@ const search = async (req, res) => {
 
 const byName = async (req, res) => {
   const object = req.query
-  const result = await facade.byName(object)
+  const page = req.query.page
+  const limit = req.query.limit
+  delete object.page
+  delete object.limit
+
+  const result = await facade.byName(object, page, limit)
   if (result && result.length > 0) {
     return res.status(200).send(result)
   }
@@ -35,7 +40,12 @@ const byName = async (req, res) => {
 
 const byEmail = async (req, res) => {
   const object = req.query
-  const result = await facade.byEmail(object)
+  const page = req.query.page
+  const limit = req.query.limit
+  delete object.page
+  delete object.limit
+
+  const result = await facade.byEmail(object, page, limit)
   if (result && result.length > 0) {
     return res.status(200).send(result)
   }
@@ -44,7 +54,13 @@ const byEmail = async (req, res) => {
 
 const byStatus = async (req, res) => {
   const object = req.query
-  const result = await facade.byStatus(object)
+  const page = req.query.page
+  const limit = req.query.limit
+  delete object.page
+  delete object.limit
+
+  const result = await facade.byStatus(object, page, limit)
+
   if (result && result.length > 0) {
     return res.status(200).send(result)
   }

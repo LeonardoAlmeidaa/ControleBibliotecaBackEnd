@@ -26,34 +26,117 @@ const getById = async (id, tableName) => {
   return result
 }
 
-const search = async (tableName, params = []) => {
+// const search = async (tableName, params = []) => {
+//   const result = await db(tableName)
+//     .select()
+//     .where("deleted_at", null)
+//     .where(function () {
+//       for (let i = 0; i < params.length; i++) {
+//         const element = params[i]
+//         this.where(element.column, element.signal, element.value)
+//       }
+//     })
+//     .catch((err) => {
+//       return false
+//     })
+//   return result
+// }
+
+const search = async (tableName, params = [], page = 1, perPage = 10) => {
+  const offset = (page - 1) * perPage
   const result = await db(tableName)
     .select()
     .where("deleted_at", null)
     .where(function () {
       for (let i = 0; i < params.length; i++) {
         const element = params[i]
-        this.where(element.column, element.signal, element.value)
+        console.log(element)
+        if (element.operator) {
+          switch (element.operator) {
+            case "AND":
+              this.andWhere(element.column, element.signal, element.value)
+              break
+            case "OR":
+              this.orWhere(element.column, element.signal, element.value)
+              break
+            case "LIKE":
+              this.orWhere(
+                element.column,
+                element.operator,
+                `%${element.value}%`
+              )
+              break
+            case "IN":
+              this.whereIn(element.column, element.value)
+              break
+            default:
+              this.andWhere(element.column, "LIKE", `%${element.value}%`)
+              break
+          }
+        } else {
+          this.where(element.column, element.signal, element.value)
+        }
       }
     })
+    .limit(perPage)
+    .offset(offset)
     .catch((err) => {
       return false
     })
-  return result
+
+  const count = await db(tableName)
+    .count("id as quantity")
+    .first()
+    .where("deleted_at", null)
+    .where(function () {
+      for (let i = 0; i < params.length; i++) {
+        const element = params[i]
+        if (element.operator) {
+          switch (element.operator) {
+            case "AND":
+              this.andWhere(element.column, element.signal, element.value)
+              break
+            case "OR":
+              this.orWhere(element.column, element.signal, element.value)
+              break
+            case "LIKE":
+              this.orWhere(
+                element.column,
+                element.operator,
+                `%${element.value}%`
+              )
+              break
+            case "IN":
+              this.whereIn(element.column, element.value)
+              break
+            default:
+              this.andWhere(element.column, "LIKE", `%${element.value}%`)
+              break
+          }
+        } else {
+          this.where(element.column, element.signal, element.value)
+        }
+      }
+    })
+    .catch((err) => {
+      console.log(err.message)
+      return []
+    })
+
+  return {
+    data: result,
+    actualPage: page,
+    total: count.quantity,
+  }
 }
 
 const filter = async (tableName, params = {}, orderBy) => {
-  console.log("DBO");
   const array = Object.keys(params)
-  console.log(array);
   const result = await db(tableName)
     .select()
     .where(function () {
       for (let i = 0; i < array.length; i++) {
         const el = array[i]
-        console.log(el);
-        console.log("-");
-        console.log(params[el])
         this.where(el, "=", params[el])
       }
     })

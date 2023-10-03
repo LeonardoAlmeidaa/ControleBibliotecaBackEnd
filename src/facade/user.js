@@ -34,38 +34,47 @@ const search = async (body) => {
   return newResults
 }
 
-const byName = async (body) => {
+const byName = async (body, page, limit) => {
   if (!body) {
     return false
   }
 
-  const obj = await dbo.filter(tableName, body, "name")
+  const object = []
+  object.push(body)
 
-  const newObj = obj.map(({ password, ...rest }) => rest)
+  const obj = await dbo.search(tableName, object, page, limit)
+
+  const newObj = obj.data.map(({ password, ...rest }) => rest)
 
   return newObj
 }
 
-const byEmail = async (body) => {
+const byEmail = async (body, page, limit) => {
   if (!body) {
     return false
   }
 
-  const obj = await dbo.filter(tableName, body, "email")
+  const object = []
+  object.push(body)
 
-  const newObj = obj.map(({ password, ...rest }) => rest)
+  const obj = await dbo.search(tableName, object, page, limit)
+
+  const newObj = obj.data.map(({ password, ...rest }) => rest)
 
   return newObj
 }
 
-const byStatus = async (body) => {
+const byStatus = async (body, page, limit) => {
   if (!body) {
     return false
   }
 
-  const obj = await dbo.filter(tableName, body, "status")
+  const object = []
+  object.push(body)
 
-  const newObj = obj.map(({ password, ...rest }) => rest)
+  const obj = await dbo.search(tableName, object, page, limit)
+
+  const newObj = obj.data.map(({ password, ...rest }) => rest)
 
   return newObj
 }
