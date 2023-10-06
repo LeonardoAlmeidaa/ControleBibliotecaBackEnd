@@ -29,7 +29,21 @@ const getByIdBook = async (id_book, tableName) => {
   return result
 }
 
+const getAll = async (tableName) => {
+  const result = await db(tableName)
+    .select()
+    .leftJoin("user", "loan.idUser", "user.id")
+    .leftJoin("book", "loan.idBook", "book.id")
+    .where("deleted_at", null)
+    .catch((err) => {
+      console.log(err.message)
+      return []
+    })
+  return result
+}
+
 module.exports = {
   getByIdUser,
-  getByIdBook
+  getByIdBook,
+  getAll
 }
