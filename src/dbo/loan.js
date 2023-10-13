@@ -1,10 +1,10 @@
 const { date } = require("joi")
 const db = require("../config/db")
 
-const getByIdUser = async (id_user, tableName) => {
+const getByIdUser = async (idUser, tableName) => {
   const result = await db(tableName)
     .select()
-    .where("id_user", id_user)
+    .where("id_user", idUser)
     .where("deleted_at", null)
     .first()
     .catch((err) => {
@@ -15,10 +15,10 @@ const getByIdUser = async (id_user, tableName) => {
   return result
 }
 
-const getByIdBook = async (id_book, tableName) => {
+const getByIdBook = async (idBook, tableName) => {
   const result = await db(tableName)
     .select()
-    .where("id_book", id_book)
+    .where("id_book", idBook)
     .where("deleted_at", null)
     .first()
     .catch((err) => {
@@ -26,24 +26,10 @@ const getByIdBook = async (id_book, tableName) => {
       return false
     })
 
-  return result
-}
-
-const getAll = async (tableName) => {
-  const result = await db(tableName)
-    .select()
-    .leftJoin("user", "loan.idUser", "user.id")
-    .leftJoin("book", "loan.idBook", "book.id")
-    .where("deleted_at", null)
-    .catch((err) => {
-      console.log(err.message)
-      return []
-    })
   return result
 }
 
 module.exports = {
   getByIdUser,
-  getByIdBook,
-  getAll
+  getByIdBook
 }

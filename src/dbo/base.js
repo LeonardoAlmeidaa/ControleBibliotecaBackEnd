@@ -12,6 +12,24 @@ const get = async (tableName) => {
   return result
 }
 
+const getLoan = async (tableName) => {
+  const result = await db(tableName)
+    .select(
+      "loan.loanStart",
+      "loan.loanEnd",
+      "loan.status",
+      "user.name as userName",
+      "book.name as bookName"
+    )
+    .innerJoin("user", "loan.idUser", "user.id")
+    .innerJoin("book", "loan.idBook", "book.id")
+    .where("loan.deleted_at", null)
+    .catch((err) => {
+      return []
+    })
+  return result
+}
+
 const getById = async (id, tableName) => {
   const result = await db(tableName)
     .select()
@@ -146,7 +164,7 @@ const filter = async (tableName, params = {}, orderBy) => {
       console.log(err);
       return false
     })
-    console.log(result)
+  console.log(result)
   return result
 }
 
@@ -197,6 +215,7 @@ const login = async (tableName, email) => {
 
 module.exports = {
   get,
+  getLoan,
   getById,
   search,
   insert,
