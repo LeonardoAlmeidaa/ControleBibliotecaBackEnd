@@ -64,8 +64,6 @@ const insert = async (object) => {
       abortEarly: false
     })
   } catch (error) {
-    console.log("ERRO SHERNOWS");
-    console.log(error);
     const errors = error.details.map((el) => el.message)
     return { errors }
   }
@@ -74,11 +72,7 @@ const insert = async (object) => {
   const param = [{ column: "id_book", signal: '=', value: object.idBook }, {column: "status", signal: '=', value: '1'}]
   const oldData = await dbo.search(tableName, param)
 
-  console.log("OLD DATA");
-  console.log(oldData);
-
   if (oldData.data.length < 1) {
-    console.log("length");
     return await dbo.insert(object, tableName)
   }
 
@@ -94,11 +88,9 @@ const insert = async (object) => {
       }
     }
   }
-
-  // return await dbo.insert(object, tableName)
 }
 
-const update = async (object) => {
+const update = async (object, id) => {
   if (!id) {
     return false
   }
@@ -110,7 +102,7 @@ const update = async (object) => {
     const errors = error.details.map((el) => el.message)
     return { errors }
   }
-  return await dbo.update(object, tableName)
+  return await dbo.update(object, id, tableName)
 }
 
 const remove = async (id) => {

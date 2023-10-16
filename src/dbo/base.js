@@ -15,6 +15,7 @@ const get = async (tableName) => {
 const getLoan = async (tableName) => {
   const result = await db(tableName)
     .select(
+      "loan.id",
       "loan.loanStart",
       "loan.loanEnd",
       "loan.status",
@@ -179,7 +180,9 @@ const insert = async (object, tableName) => {
 }
 
 const update = async (object, id, tableName) => {
-  console.log(tableName);
+  console.log(object)
+  console.log(id)
+  console.log(tableName)
   const result = await db(tableName)
     .update(object)
     .where("id", id)
