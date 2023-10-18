@@ -69,7 +69,7 @@ const insert = async (object) => {
   }
 
   object.loanEnd = moment(object.loanStart).add("3", "days").format()
-  const param = [{ column: "id_book", signal: '=', value: object.idBook }, {column: "status", signal: '=', value: '1'}]
+  const param = [{ column: "id_book", signal: '=', value: object.idBook }, { column: "status", signal: '=', value: '1' }]
   const oldData = await dbo.search(tableName, param)
 
   if (oldData.data.length < 1) {
@@ -80,11 +80,15 @@ const insert = async (object) => {
     for (let index = 0; index < oldData.data.length; index++) {
       const element = oldData.data[index]
 
-      console.log("OLD DATA - else");
-      console.log(element);
-
       if (moment(element.loanStart).format('yyyy-MM-DD') >= object.loanStart) {
         return { errors: [{ file: 'Erro', message: "Já existe um empréstimo ATIVO nesta data." }] }
+      } else if (moment(element.loanEnd).format('yyyy-MM-DD') > object.loanStart) {
+        return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, já está reservada para outro empréstimo." }] }
+      } else if (object.loanStart < moment(Date.now()).format('yyyy-MM-DD')) {
+        return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, deve ser maior ou igual que a data atual." }] }
+      }
+      else {
+        return await dbo.insert(object, tableName)
       }
     }
   }
