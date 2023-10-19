@@ -74,22 +74,30 @@ const insert = async (object) => {
 
   if (oldData.data.length < 1) {
     return await dbo.insert(object, tableName)
-  }
-
-  else {
+  } else {
     for (let index = 0; index < oldData.data.length; index++) {
       const element = oldData.data[index]
 
+      console.log(element)
+      console.log("lernows")
+      console.log(object)
+
       if (moment(element.loanStart).format('yyyy-MM-DD') >= object.loanStart) {
         return { errors: [{ file: 'Erro', message: "Já existe um empréstimo ATIVO nesta data." }] }
-      } else if (moment(element.loanEnd).format('yyyy-MM-DD') > object.loanStart) {
-        return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, já está reservada para outro empréstimo." }] }
-      } else if (object.loanStart < moment(Date.now()).format('yyyy-MM-DD')) {
-        return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, deve ser maior ou igual que a data atual." }] }
-      }
-      else {
+      } else {
         return await dbo.insert(object, tableName)
       }
+
+      // if (moment(element.loanStart).format('yyyy-MM-DD') >= object.loanStart) {
+      //   return { errors: [{ file: 'Erro', message: "Já existe um empréstimo ATIVO nesta data." }] }
+      // } else if (moment(element.loanEnd).format('yyyy-MM-DD') > object.loanStart) {
+      //   return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, já está reservada para outro empréstimo." }] }
+      // } else if (object.loanStart < moment(Date.now()).format('yyyy-MM-DD')) {
+      //   return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, deve ser maior ou igual que a data atual." }] }
+      // }
+      // else {
+      //   return await dbo.insert(object, tableName)
+      // }
     }
   }
 }

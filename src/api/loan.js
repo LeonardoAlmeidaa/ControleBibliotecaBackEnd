@@ -57,18 +57,16 @@ const byIdBook = async (req, res) => {
 
 const insert = async (req, res) => {
   const object = req.body
-  console.log("CONSOLE API ****");
-  console.log(object);
   const result = await facade.insert(object)
 
+  console.log(result)
   if (result) {
+    console.log("RESULT");
     if (result.errors) {
       return res.status(400).send(result.errors)
     }
     return res.sendStatus(204)
   }
-
-
 }
 
 const update = async (req, res) => {

@@ -69,7 +69,6 @@ const search = async (tableName, params = [], page = 1, perPage = 10) => {
     .where(function () {
       for (let i = 0; i < params.length; i++) {
         const element = params[i]
-        console.log(element)
         if (element.operator) {
           switch (element.operator) {
             case "AND":
@@ -165,7 +164,6 @@ const filter = async (tableName, params = {}, orderBy) => {
       console.log(err);
       return false
     })
-  console.log(result)
   return result
 }
 
@@ -180,9 +178,6 @@ const insert = async (object, tableName) => {
 }
 
 const update = async (object, id, tableName) => {
-  console.log(object)
-  console.log(id)
-  console.log(tableName)
   const result = await db(tableName)
     .update(object)
     .where("id", id)
