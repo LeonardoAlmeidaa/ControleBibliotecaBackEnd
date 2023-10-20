@@ -6,7 +6,7 @@ const object = Joi.object().keys({
   loanStart: Joi.date().required(),
   loanEnd: Joi.date(),
   status: Joi.number(),
-  obs: Joi.string()
+  obs: Joi.string().allow(null)
 })
 
 module.exports = {object}

@@ -1,15 +1,21 @@
+const { object } = require("joi")
 const dbo = require("../dbo/base")
 const validation = require("../model/user")
 const tableName = "user"
 const bcrypt = require("bcrypt")
 const saltRounds = 10
 
-const get = async () => {
-  const obj = await dbo.get(tableName)
+const get = async (page, limit) => {
+  const obj = await dbo.get(tableName, page, limit)
 
-  const newObj = obj.map(({ password, ...rest }) => rest)
+  const newObj = obj.data.map(({ password, ...rest }) => rest)
+  console.log(newObj);
 
-  return newObj
+  return {
+    data: newObj,
+    actualPage: obj.actualPage,
+    total: obj.total,
+  }
 }
 
 const getById = async (id) => {

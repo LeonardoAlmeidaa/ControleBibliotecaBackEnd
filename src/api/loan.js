@@ -59,9 +59,7 @@ const insert = async (req, res) => {
   const object = req.body
   const result = await facade.insert(object)
 
-  console.log(result)
   if (result) {
-    console.log("RESULT");
     if (result.errors) {
       return res.status(400).send(result.errors)
     }
@@ -74,10 +72,12 @@ const update = async (req, res) => {
   const object = req.body
   const result = await facade.update(object, id)
 
-  if (result.erros) {
-    return res.status(400).send(result.errors)
+  if (result) {
+    if (result.errors) {
+      return res.status(400).send(result.errors)
+    }
+    return res.sendStatus(204)
   }
-  return res.sendStatus(204)
 }
 
 const remove = async (req, res) => {

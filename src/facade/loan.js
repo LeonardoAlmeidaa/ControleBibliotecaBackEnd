@@ -73,37 +73,31 @@ const insert = async (object) => {
   const oldData = await dbo.search(tableName, param)
 
   if (oldData.data.length < 1) {
-    return await dbo.insert(object, tableName)
+    if (object.loanStart < moment(Date.now()).format('yyyy-MM-DD')) {
+      return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, deve ser maior ou igual que a data atual." }] }
+    }
+    else {
+      return await dbo.insert(object, tableName)
+    }
   } else {
     for (let index = 0; index < oldData.data.length; index++) {
       const element = oldData.data[index]
 
-      console.log(element)
-      console.log("lernows")
-      console.log(object)
-
       if (moment(element.loanStart).format('yyyy-MM-DD') >= object.loanStart) {
         return { errors: [{ file: 'Erro', message: "Já existe um empréstimo ATIVO nesta data." }] }
-      } else {
+      } else if (object.loanStart <= (moment(element.loanEnd).format('yyyy-MM-DD'))) {
+        return { errors: [{ file: 'Erro', message: "Já existe um empréstimo LUCAS nesta data." }] }
+      }
+      else {
         return await dbo.insert(object, tableName)
       }
-
-      // if (moment(element.loanStart).format('yyyy-MM-DD') >= object.loanStart) {
-      //   return { errors: [{ file: 'Erro', message: "Já existe um empréstimo ATIVO nesta data." }] }
-      // } else if (moment(element.loanEnd).format('yyyy-MM-DD') > object.loanStart) {
-      //   return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, já está reservada para outro empréstimo." }] }
-      // } else if (object.loanStart < moment(Date.now()).format('yyyy-MM-DD')) {
-      //   return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, deve ser maior ou igual que a data atual." }] }
-      // }
-      // else {
-      //   return await dbo.insert(object, tableName)
-      // }
     }
   }
 }
 
 const update = async (object, id) => {
   if (!id) {
+    console.log("ID");
     return false
   }
   try {
@@ -111,10 +105,35 @@ const update = async (object, id) => {
       abortEarly: false
     })
   } catch (error) {
+    console.log(error);
     const errors = error.details.map((el) => el.message)
     return { errors }
   }
-  return await dbo.update(object, id, tableName)
+
+  const param = [{ column: "id_book", signal: '=', value: object.idBook }, { column: "status", signal: '=', value: '1' }]
+  const oldData = await dbo.search(tableName, param)
+
+  if (oldData.data.length < 1) {
+    if (object.loanStart < moment(Date.now()).format('yyyy-MM-DD')) {
+      return { errors: [{ file: 'Erro', message: "A data inicial de empréstimo, deve ser maior ou igual que a data atual." }] }
+    }
+    else {
+      return await dbo.update(object, id, tableName)
+    }
+  } else {
+    for (let index = 0; index < oldData.data.length; index++) {
+      const element = oldData.data[index]
+
+      if (moment(element.loanStart).format('yyyy-MM-DD') >= object.loanStart) {
+        return { errors: [{ file: 'Erro', message: "Já existe um empréstimo ATIVO nesta data." }] }
+      } else if (object.loanStart <= (moment(element.loanEnd).format('yyyy-MM-DD'))) {
+        return { errors: [{ file: 'Erro', message: "Já existe um empréstimo LUCAS nesta data." }] }
+      }
+      else {
+        return await dbo.update(object, id, tableName)
+      }
+    }
+  }
 }
 
 const remove = async (id) => {

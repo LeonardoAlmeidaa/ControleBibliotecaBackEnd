@@ -1,7 +1,10 @@
 const facade = require("../facade/user")
 
 const get = async (req, res) => {
-  const result = await facade.get()
+  const page = req.query.page
+  const limit = req.query.limit
+
+  const result = await facade.get(page,limit)
   return res.status(200).send(result)
 }
 

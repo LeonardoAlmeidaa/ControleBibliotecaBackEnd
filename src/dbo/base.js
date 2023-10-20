@@ -1,15 +1,32 @@
 const { date } = require("joi")
 const db = require("../config/db")
 
-const get = async (tableName) => {
+const get = async (tableName, page = 1, limit = 10) => {
+  const offset = (page - 1) * limit
+
   const result = await db(tableName)
     .select()
+    .limit(limit)
+    .offset(offset)
     .where("deleted_at", null)
     .catch((err) => {
       console.log(err.message)
       return []
     })
-  return result
+
+  const count = await db(tableName)
+    .count("id as quantity")
+    .first()
+    .catch((error) => {
+      console.log(error.message)
+      return []
+    })
+
+  return {
+    data: result,
+    actualPage: page,
+    total: count.quantity,
+  }
 }
 
 const getLoan = async (tableName) => {
