@@ -5,7 +5,7 @@ const object = Joi.object().keys({
   idBook: Joi.number().required(),
   loanStart: Joi.date().required(),
   loanEnd: Joi.date(),
-  status: Joi.number(),
+  status: Joi.string(),
   obs: Joi.string().allow(null)
 })
 

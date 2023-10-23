@@ -9,7 +9,6 @@ const get = async (page, limit) => {
   const obj = await dbo.get(tableName, page, limit)
 
   const newObj = obj.data.map(({ password, ...rest }) => rest)
-  console.log(newObj);
 
   return {
     data: newObj,
