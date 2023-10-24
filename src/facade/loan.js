@@ -97,7 +97,6 @@ const insert = async (object) => {
 
 const update = async (object, id) => {
   if (!id) {
-    console.log("ID");
     return false
   }
   try {
@@ -110,7 +109,11 @@ const update = async (object, id) => {
     return { errors }
   }
 
-  const param = [{ column: "id_book", signal: '=', value: object.idBook }, { column: "status", signal: '=', value: '1' }]
+  const param = [
+    { column: "id_book", signal: '=', value: object.idBook },
+    { column: "status", signal: '=', value: 'Ativo' },
+    { column: "id", signal: '<>', value: id }
+  ]
   const oldData = await dbo.search(tableName, param)
 
   if (oldData.data.length < 1) {
