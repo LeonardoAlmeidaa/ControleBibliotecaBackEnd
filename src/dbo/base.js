@@ -29,7 +29,8 @@ const get = async (tableName, page = 1, limit = 10) => {
   }
 }
 
-const getLoan = async (tableName) => {
+const getLoan = async (tableName, page = 1, limit = 10) => {
+  const offset = (page - 1) * limit
   const result = await db(tableName)
     .select(
       "loan.id",
@@ -41,11 +42,26 @@ const getLoan = async (tableName) => {
     )
     .innerJoin("user", "loan.idUser", "user.id")
     .innerJoin("book", "loan.idBook", "book.id")
+    .limit(limit)
+    .offset(offset)
     .where("loan.deleted_at", null)
     .catch((err) => {
       return []
     })
-  return result
+
+  const count = await db(tableName)
+    .count("id as quantity")
+    .first()
+    .catch((error) => {
+      console.log(error.message)
+      return []
+    })
+
+  return {
+    data: result,
+    actualPage: page,
+    total: count.quantity,
+  }
 }
 
 const getById = async (id, tableName) => {

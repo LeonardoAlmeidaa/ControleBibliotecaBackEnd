@@ -5,8 +5,8 @@ const validation = require("../model/loan")
 const tableName = "loan"
 const moment = require("moment")
 
-const get = async () => {
-  return await dbo.getLoan(tableName)
+const get = async (page, limit) => {
+  return await dbo.getLoan(tableName, page, limit)
 }
 
 const getById = async (id) => {

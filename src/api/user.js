@@ -4,7 +4,7 @@ const get = async (req, res) => {
   const page = req.query.page
   const limit = req.query.limit
 
-  const result = await facade.get(page,limit)
+  const result = await facade.get(page, limit)
   return res.status(200).send(result)
 }
 
@@ -21,6 +21,7 @@ const getById = async (req, res) => {
 const search = async (req, res) => {
   const object = req.body
   const result = await facade.search(object)
+
   if (result && result.length > 0) {
     return res.status(200).send(result)
   }

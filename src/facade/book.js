@@ -2,8 +2,8 @@ const dbo = require("../dbo/base")
 const validation = require("../model/book")
 const tableName = "book"
 
-const get = async () => {
-  return await dbo.get(tableName)
+const get = async (page, limit) => {
+  return await dbo.get(tableName, page, limit)
 }
 
 const getById = async (id) => {
