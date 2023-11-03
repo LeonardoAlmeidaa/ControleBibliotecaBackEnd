@@ -4,6 +4,7 @@ const auth = require("../api/auth")
 
 module.exports = (router) => {
   router.route(route).all(auth.validate).get(api.get).post(api.insert)
+  router.route(`${route}/byGender`).all(auth.validate).get(api.getByGender)
   router.route(`${route}/search`).all(auth.validate).post(api.search)
   router.route(`${route}/search/by-id`).all(auth.validate).get(api.byId)
   router.route(`${route}/search/by-name`).all(auth.validate).get(api.byName)

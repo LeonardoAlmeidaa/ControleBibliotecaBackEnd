@@ -13,6 +13,10 @@ const getById = async (id) => {
   return await dbo.getById(id, tableName)
 }
 
+const getByGender = async () => {
+  return await dbo.getByGender(tableName)
+}
+
 const search = async (body) => {
   if (!body || !Array.isArray(body) || body.length === 0) {
     return false
@@ -103,6 +107,7 @@ const remove = async (id) => {
 module.exports = {
   get,
   getById,
+  getByGender,
   search,
   byId,
   byName,

@@ -18,6 +18,11 @@ const getById = async (req, res) => {
   return res.sendStatus(404)
 }
 
+const getByGender = async (req, res) => {
+  const result = await facade.getByGender()
+  return res.status(200).send(result)
+}
+
 const search = async (req, res) => {
   const object = req.body
   const result = await facade.search(object)
@@ -118,6 +123,7 @@ const remove = async (req, res) => {
 module.exports = {
   get,
   getById,
+  getByGender,
   search,
   byId,
   byName,

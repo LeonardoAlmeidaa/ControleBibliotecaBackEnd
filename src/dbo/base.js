@@ -29,6 +29,20 @@ const get = async (tableName, page = 1, limit = 10) => {
   }
 }
 
+const getByGender = async (tableName) => {
+  const result = await db(tableName)
+    .count("id as value")
+    .select("gender as name")
+    .where("deleted_at", null)
+    .groupBy('gender')
+    .catch((err) => {
+      console.log(err.message)
+      return []
+    })
+
+  return result
+}
+
 const getLoan = async (tableName, page = 1, limit = 10) => {
   const offset = (page - 1) * limit
   const result = await db(tableName)
@@ -248,6 +262,7 @@ module.exports = {
   get,
   getLoan,
   getById,
+  getByGender,
   search,
   insert,
   update,
