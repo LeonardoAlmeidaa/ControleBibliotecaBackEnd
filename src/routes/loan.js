@@ -8,5 +8,7 @@ module.exports = (router) => {
   router.route(`${route}/search/by-id`).all(auth.validate).get(api.byId)
   router.route(`${route}/by-id-user`).all(auth.validate).get(api.getById)
   router.route(`${route}/by-id-book`).all(auth.validate).get(api.get)
+  router.route(`${route}/search/by-start-date`).all(auth.validate).get(api.byStartDate)
+  router.route(`${route}/search/by-end-date`).all(auth.validate).get(api.byEndDate)
   router.route(`${route}/:id`).all(auth.validate).get(api.getById).patch(api.update).delete(api.remove)
 }

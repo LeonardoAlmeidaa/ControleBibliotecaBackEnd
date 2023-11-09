@@ -30,6 +30,32 @@ const byId = async (body) => {
   return await dbo.byId(tableName, body, "id")
 }
 
+const byStartDate = async (body, page, limit) => {
+  if (!body) {
+    return false
+  }
+
+  const object = []
+  object.push(body)
+
+  const result = await dbo.search(tableName, object, page, limit)
+
+  return result.data
+}
+
+const byEndDate = async (body, page, limit) => {
+  if (!body) {
+    return false
+  }
+
+  const object = []
+  object.push(body)
+
+  const result = await dbo.search(tableName, object, page, limit)
+
+  return result.data
+}
+
 const byIdUser = async (body) => {
   if (!body) {
     return false
@@ -151,6 +177,8 @@ module.exports = {
   getById,
   search,
   byId,
+  byStartDate,
+  byEndDate,
   getByIdUser,
   byIdUser,
   getByIdBook,
